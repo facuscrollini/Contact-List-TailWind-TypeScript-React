@@ -3,9 +3,6 @@ export type NewContactResponse = {
     phone:string,
     email:string,
     address:string,
-    id: number
-}
-
-export type BadResponse = {
-    message: string
+    id?: number,
+    error?:string
 }

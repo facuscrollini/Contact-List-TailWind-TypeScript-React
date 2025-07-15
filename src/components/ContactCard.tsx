@@ -1,7 +1,20 @@
-import type { ContactCardProps } from "../interfaces/ContactCard"
 
-export const ContactCard = ({name, lastName,address,phone,email}:ContactCardProps) => {
+import { useNavigate } from "react-router"
+import { deleteAgendaContact } from "../api/apiContacts"
+import type { ContactCardProps } from "../interfaces/ContactCardTypes"
 
+export const ContactCard = ({contacto, agenda, actualizarLista}:ContactCardProps) => {
+ 
+    const navigate = useNavigate()
+    
+    const deleteContact = async(nombreAgenda:string, id:number) =>{
+       await deleteAgendaContact(nombreAgenda,id)
+        actualizarLista(nombreAgenda)
+    }
+
+    const editContact = () =>{
+        navigate('/add-contact', {state: contacto})
+    }
 
     return (
         <>
@@ -14,28 +27,29 @@ export const ContactCard = ({name, lastName,address,phone,email}:ContactCardProp
                     </div>
                     <div className="contact-info">
                         <span>
-                            <p>{name} {lastName}</p>
+                            <p>{contacto.name}</p>
                         </span>
                         <span>
                             <p>
-                                {address}
+                                {contacto.address}
                             </p>
                         </span>
                         <span>
                             <p>
-                                {phone}
+                                {contacto.phone}
                             </p>
                         </span>
                         <span>
                             <p>
-                                {email}
+                                {contacto.email}
                             </p>
                         </span>
                     </div>
                 </div>
                 <div className="buttons mx-2">
-                    <button className="bg-amber-800 py-2 px-5 rounded-l-lg hover:cursor-pointer"><i className="fa-solid fa-pencil"></i></button>
-                    <button className="bg-amber-200 py-2 px-5 rounded-r-lg hover:cursor-pointer"><i className="fa-solid fa-trash"></i></button>
+                    <button className="bg-amber-800 py-2 px-5 rounded-l-lg hover:cursor-pointer" onClick={editContact}><i className="fa-solid fa-pencil"></i></button>
+                    
+                    <button title="Eliminar contacto"className="bg-amber-200 py-2 px-5 rounded-r-lg hover:cursor-pointer" onClick={()=>deleteContact(agenda, contacto.id!)}><i className="fa-solid fa-trash"></i></button>
                 </div>
             </div>
         </>
